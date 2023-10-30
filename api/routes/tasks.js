@@ -12,6 +12,7 @@ router.get("/", (req, res, next) => {
     .then((docs) => {
       console.log(docs);
       const response = {
+        status: 200,
         count: docs.length,
         tasks: docs.map((doc) => {
           return {
@@ -56,6 +57,7 @@ router.post("/", (req, res, next) => {
     .then((result) => {
       console.log(result);
       res.status(201).json({
+        status: 201,
         message: "Task created successfully",
         createdTask: {
           _id: result._id,
@@ -87,6 +89,7 @@ router.get("/:taskId", (req, res, next) => {
       console.log(`From the database: ${doc}`);
       if (doc) {
         res.status(200).json({
+          status: 200,
           task: doc,
           request: {
             type: "GET",
@@ -95,9 +98,10 @@ router.get("/:taskId", (req, res, next) => {
           },
         });
       } else
-        res
-          .status(404)
-          .json({ message: "No Valid entry found for provided ID" });
+        res.status(404).json({
+          status: 404,
+          message: "No Valid entry found for provided ID",
+        });
     })
     .catch((err) => {
       console.log(err);
@@ -118,6 +122,7 @@ router.put("/:taskId", (req, res, next) => {
     .then((result) => {
       console.log(result);
       res.status(200).json({
+        status: 200,
         message: "Product has been updated",
         request: {
           type: "GET",
@@ -137,8 +142,9 @@ router.delete("/:taskId", (req, res, next) => {
   const id = req.params.taskId;
   Task.deleteOne({ _id: id })
     .exec()
-    .then(result => {
+    .then((result) => {
       res.status(200).json({
+        status: 200,
         message: "Product has been deleted",
         request: {
           type: "POST",

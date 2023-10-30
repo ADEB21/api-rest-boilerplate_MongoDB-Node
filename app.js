@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 dotenv.config();
 
-const productRoutes = require("./api/routes/products");
 const taskRoutes = require("./api/routes/tasks")
 
 mongoose.connect(
@@ -32,13 +31,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/products", productRoutes);
 app.use("/tasks", taskRoutes);
 
 app.use("/", (req, res, next) => {
   res.status(200);
   res.json({
-    message: "Hello world",
+    message: "Hello to the todo-list",
   });
 });
 
