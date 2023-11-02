@@ -1,0 +1,11 @@
+.taskItem{
+    list-style: none;
+    margin-bottom: 48px;
+    &_title{
+        font-size: 32px;
+    }
+    &_actions{
+        display: flex;
+        gap: 8px;
+    }
+}

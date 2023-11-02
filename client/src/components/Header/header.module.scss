@@ -1,0 +1,36 @@
+.header {
+  padding: 24px 40px;
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    ul {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      li {
+        button {
+        }
+      }
+    }
+  }
+}
+
+.header {
+  &_disconnect {
+    button {
+      padding: 8px 16px;
+      background-color: black;
+      color: white;
+      font-size: 16px;
+    }
+  }
+  &_login {
+    a{
+      padding: 8px 16px;
+      background-color: black;
+      color: white;
+      font-size: 16px;
+    }
+  }
+}

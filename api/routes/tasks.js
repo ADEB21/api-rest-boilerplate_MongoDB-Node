@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const generateEtag = require("etag");
 
 // import Model
 const Task = require("../models/task");
@@ -28,7 +29,13 @@ router.get("/", (req, res, next) => {
         }),
       };
       if (docs.length >= 0) {
-        res.status(200).json(response);
+        const etag = generateEtag((JSON.stringify(response)))
+        if (req.headers["if-None-Match"] === etag) {
+          res.status(304);
+        } else {
+          res.set('ETag', etag);
+          res.status(200).json(response.headers);
+        }
       } else {
         res.status(404).json({
           message: "No entries found",
@@ -123,7 +130,7 @@ router.put("/:taskId", (req, res, next) => {
       console.log(result);
       res.status(200).json({
         status: 200,
-        message: "Product has been updated",
+        message: "Task has been updated",
         request: {
           type: "GET",
           url: "http://localhost:8080/tasks/" + id,
@@ -145,7 +152,7 @@ router.delete("/:taskId", (req, res, next) => {
     .then((result) => {
       res.status(200).json({
         status: 200,
-        message: "Product has been deleted",
+        message: "Task has been deleted",
         request: {
           type: "POST",
           url: "http://localhost:8080/tasks/",
