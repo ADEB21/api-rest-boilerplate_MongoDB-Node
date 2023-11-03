@@ -19,7 +19,6 @@ router.get("/", (req, res, next) => {
     .select("title isDone _date _id")  // Select specific fields to return in the response.
     .exec()  // Execute the query.
     .then((docs) => {
-      console.log(docs);
       const response = {
         status: 200,
         count: docs.length,
@@ -67,7 +66,6 @@ router.post("/", (req, res, next) => {
   task
     .save()  // Save the new task to the database.
     .then((result) => {
-      console.log(result);
       res.status(201).json({
         status: 201,
         message: "Task created successfully",
@@ -99,7 +97,6 @@ router.get("/:taskId", (req, res, next) => {
     .select("title isDone _date _id")
     .exec()
     .then((doc) => {
-      console.log(`From the database: ${doc}`);
       if (doc) {
         res.status(200).json({
           status: 200,
@@ -132,7 +129,6 @@ router.put("/:taskId", (req, res, next) => {
   Task.updateOne({ _id: id }, { $set: updateOps })
     .exec()
     .then((result) => {
-      console.log(result);
       res.status(200).json({
         status: 200,
         message: "Task has been updated",

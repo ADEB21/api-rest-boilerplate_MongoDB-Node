@@ -58,7 +58,6 @@ function authorize(role) {
       const token = authHeader.split(" ")[1];
 
       jwt.verify(token, secretKey, (err, user) => {
-        console.log("User", user);
         if (err) {
           return res.sendStatus(403);
         }
@@ -77,7 +76,6 @@ function authorize(role) {
 }
 
 app.post("/login", (req, res) => {
-  console.log(req);
   const name = req.body.username;
   const password = req.body.password;
   const token = jwt.sign({ name }, secretKey, { expiresIn: "1h" });

@@ -16,13 +16,11 @@ const Login = () => {
       .then((res) => {
         if (res.status === 304) {
           // Check if the response status indicates "Not Modified."
-          console.log("Not Modified", res);
           setTasks(JSON.parse(localStorage.getItem("tasks"))); // Use cached tasks data.
         } else if (res.status === 200) {
           // Check if the response status is "Modified."
           const resEtag = res.headers.get("etag"); // Get the ETag from the response headers.
           localStorage.setItem("etag", resEtag); // Update the ETag in local storage.
-          console.log("Modified", res);
           res
             .json()
             .then((data) => {
@@ -44,7 +42,6 @@ const Login = () => {
   React.useEffect(() => {
     fetchTasks(); // Call fetchTasks when the component is mounted.
     eventBus.on("refetch", () => {
-      console.log("Hello");
       fetchTasks();
     });
   }, []);
