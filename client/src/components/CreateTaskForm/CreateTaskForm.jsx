@@ -1,5 +1,6 @@
 import React from "react";
-import Style from "./createTaskForm.module.scss"
+import Style from "./createTaskForm.module.scss";
+import eventBus from "../../assets/scripts/eventBus";
 
 const CreateTaskForm = () => {
   const [data, setData] = React.useState(null);
@@ -10,7 +11,6 @@ const CreateTaskForm = () => {
     setTaskField(e.target.value);
   };
 
-
   const createTask = async () => {
     const body = { title: taskField };
     const response = await fetch("/tasks", {
@@ -20,18 +20,21 @@ const CreateTaskForm = () => {
       },
       body: JSON.stringify(body),
     }).then((data) => data.json());
-    console.log(response);
-    setData(response);
+    eventBus.dispatch("refetch");
   };
 
   return (
     <form className={Style.form}>
       <label htmlFor="">Add a task</label>
       <input onChange={handleUsernameChange} type="text" />
-      <button onClick={(e) => {
-        e.preventDefault()
-        createTask()
-      }} type="submit">
+      <button
+        style={taskField ? {opacity: 1}: {opacity: 0.5, cursor: "not-allowed"}}
+        onClick={(e) => {
+          e.preventDefault();
+          createTask();
+        }}
+        type="submit"
+      >
         Add task
       </button>
     </form>

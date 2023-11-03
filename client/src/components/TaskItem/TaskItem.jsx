@@ -1,5 +1,6 @@
 import React from "react";
 import Style from "./taskItem.module.scss";
+import eventBus from "../../assets/scripts/eventBus";
 
 const TaskItem = ({ task }) => {
   const updateTaskStatus = async (id) => {
@@ -11,16 +12,27 @@ const TaskItem = ({ task }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
-    }).then((data) => data.json());
+    }).then((data) => {
+      if (data.status === 200) {
+        data.json();
+        eventBus.dispatch("refetch");
+      }
+    });
   };
 
-  const deleteTask = async (id) => {
-    const response = await fetch(`/tasks/${id}`, {
+  const deleteTask = (id) => {
+    fetch(`/tasks/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((data) => data.json());
+    }).then((res) => {
+      res.json().then((data) => {
+        if (data.status === 200) {
+          eventBus.dispatch("refetch");
+        }
+      });
+    });
   };
 
   return (
