@@ -13,14 +13,24 @@
   &_actions {
     display: flex;
     gap: 8px;
+    margin-top: 24px;
   }
   &_title {
     font-size: 32px;
+    @media screen and (max-width: 1024px) {
+      font-size: 16px;
+    }
   }
   &_number {
     font-size: 32px;
+    @media screen and (max-width: 1024px) {
+      font-size: 16px;
+    }
   }
-  &_separator{
+  &_separator {
     font-size: 32px;
+    @media screen and (max-width: 1024px) {
+      font-size: 16px;
+    }
   }
 }

@@ -1,21 +1,55 @@
 .hero {
   width: 100%;
   padding: 24px 40px;
-  h1 {
-    font-size: 100px;
-    margin-bottom: 24px;
+  display: flex;
+  gap: 5%;
+  @media screen and (max-width: 1024px) {
+    flex-direction: column;
+    padding: 24px 16px;
+  }
+  & > div {
+    width: 55%;
+    @media screen and (max-width: 1024px) {
+      width: 100%;
+    }
+    h1 {
+      font-size: 3rem;
+      height: auto;
+      max-width: 800px;
+      width: 100%;
+      margin-bottom: 24px;
+    }
+    p {
+      margin-bottom: 40px;
+      font-size: 24px;
+    }
+    div:nth-of-type(1) {
+      padding: 8px 16px;
+      background-color: black;
+      width: fit-content;
+      a {
+        color: white;
+      }
+    }
   }
   img {
-    width: 100%;
-    margin-bottom: 40px;
-    margin-top: 40px;
+    width: 40%;
+    height: auto;
+    object-fit: cover;
+    clip-path: inset(0 0 100% 0);
+    animation: slide 1.5s ease-out forwards;
+    @media screen and (max-width: 1024px) {
+      width: 100%;
+      margin-top: 40px;
+    }
   }
-  p {
-    margin-bottom: 40px;
+}
+
+@keyframes slide {
+  0% {
+    clip-path: inset(0 0 100% 0);
   }
-  a {
-    padding: 8px 16px;
-    background-color: black;
-    color: white;
+  100% {
+    clip-path: inset(0 0 0% 0);
   }
 }

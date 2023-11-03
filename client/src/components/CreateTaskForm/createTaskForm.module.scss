@@ -3,6 +3,11 @@
   width: 50%;
   margin: auto;
   min-height: 100%;
+  @media screen and (max-width: 1024px) {
+    padding: 24px 16px;
+    margin: 0;
+    width: 100%;
+  }
   label {
     display: block;
     margin-bottom: 8px;

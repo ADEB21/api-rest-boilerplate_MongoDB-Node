@@ -66,7 +66,7 @@ const Header = ({ app }) => {
       </header>
 
       {isAuthenticated && (
-        <h1 style={{ padding: "80px 40px" }}>
+        <h1 className={Style.isConnected}>
           Hello {data && data.user.name} 👋, Vous avez 
           <span style={{ color: "red" }}>
             {count && " " + count + " "}

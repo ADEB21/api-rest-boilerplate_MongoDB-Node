@@ -1,9 +1,20 @@
 .header {
   padding: 24px 40px;
+  @media screen and (max-width: 1024px) {
+    flex-direction: column;
+    padding: 24px 16px;
+  }
   nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    h1{
+      font-size: 30px;
+      @media screen and (max-width: 1024px) {
+        font-size: 16px;
+
+      }
+    }
     ul {
       display: flex;
       align-items: center;
@@ -26,11 +37,18 @@
     }
   }
   &_login {
-    a{
+    a {
       padding: 8px 16px;
       background-color: black;
       color: white;
       font-size: 16px;
     }
+  }
+}
+
+.isConnected {
+  padding: 24px 40px;
+  @media screen and (max-width: 1024px) {
+    padding: 24px 16px;
   }
 }
