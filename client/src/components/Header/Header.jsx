@@ -45,7 +45,7 @@ const Header = ({ app }) => {
           <h1>{app}</h1>
           <ul>
             <li>
-              <a href="/">Accueil</a>
+              <a href="/">Home</a>
             </li>
             {isAuthenticated ? (
               <>
@@ -53,12 +53,12 @@ const Header = ({ app }) => {
                   <a href="/dashboard">Dashboard</a>
                 </li>
                 <li className={Style.header_disconnect}>
-                  <button onClick={() => disconnect()}>Se déconnecter</button>
+                  <button onClick={() => disconnect()}>Logout</button>
                 </li>
               </>
             ) : (
               <li className={Style.header_login}>
-                <a href="/login">Se connecter</a>
+                <a href="/login">Login</a>
               </li>
             )}
           </ul>
@@ -67,11 +67,11 @@ const Header = ({ app }) => {
 
       {isAuthenticated && (
         <h1 style={{ padding: "80px 40px" }}>
-          Bonjour {data && data.user.name}, Voici vos tâches{" "}
-          <span style={{ fontVariantPosition: "super", color: "red" }}>
-            {count && count}
-            {/* Display the count of tasks in a superscript style. */}
+          Hello {data && data.user.name} 👋, Vous avez 
+          <span style={{ color: "red" }}>
+            {count && " " + count + " "}
           </span>
+          tâche{count > 1 ? "s" : ""}
         </h1>
       )}
     </>

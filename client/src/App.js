@@ -11,6 +11,7 @@ import Login from "./pages/LoginPage";  // Import the Login page component.
 import DashboardPage from "./pages/DashboardPage";  // Import the Dashboard page component.
 import ProtectedRoutes from "./routes/ProtectedRoutes";  // Import the ProtectedRoutes component.
 import Header from "./components/Header/Header";  // Import the Header component.
+import HomePage from "./pages/Home/HomePage";
 
 function App() {
   const [data, setData] = React.useState(null);  // Initialize a state variable for data.
@@ -33,6 +34,7 @@ function App() {
       <Router>  {/* Set up the Router for managing routes. */}
         <Routes>  {/* Define routes using the Routes component. */}
           <Route path="/login" element={<Login />}></Route>  {/* Define a route for the Login page. */}
+          <Route path="/" element={<HomePage/>}></Route>  {/* Define a route for the Login page. */}
           <Route element={<ProtectedRoutes />}>  {/* Group routes that require authentication using ProtectedRoutes. */}
             <Route element={<DashboardPage />} path="/dashboard"/>  {/* Define a route for the Dashboard page. */}
           </Route>
