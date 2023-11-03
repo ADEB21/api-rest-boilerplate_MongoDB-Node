@@ -69,7 +69,7 @@ const Header = ({ app }) => {
         <h1 className={Style.isConnected}>
           Hello {data && data.user.name} 👋, Vous avez 
           <span style={{ color: "red" }}>
-            {count && " " + count + " "}
+            {" " + count + " "}
           </span>
           tâche{count > 1 ? "s" : ""}
         </h1>
