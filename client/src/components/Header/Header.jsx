@@ -4,7 +4,11 @@ import eventBus from "../../assets/scripts/eventBus";
 
 const Header = ({ app }) => {
   const [data, setData] = React.useState(null); // Initialize a state variable for user data.
-  const [count, setCount] = React.useState(JSON.parse(localStorage.getItem("tasks")).count); // Initialize a state variable for user data.
+  const [count, setCount] = React.useState(
+    localStorage.getItem("tasks")
+      ? JSON.parse(localStorage.getItem("tasks")).count
+      : 0
+  ); // Initialize a state variable for user data.
 
   const disconnect = () => {
     localStorage.removeItem("token");
@@ -23,16 +27,13 @@ const Header = ({ app }) => {
     setData(response);
   };
 
-
-
   React.useEffect(() => {
     fetchData();
     eventBus.on("refetch", () => {
       setTimeout(() => {
         setCount(JSON.parse(localStorage.getItem("tasks")).count);
-      }, 100)
-      
-    })
+      }, 100);
+    });
   }, []);
 
   const isAuthenticated = localStorage.getItem("token");
@@ -64,13 +65,15 @@ const Header = ({ app }) => {
         </nav>
       </header>
 
-      <h1 style={{ padding: "80px 40px" }}>
-        Bonjour {data && data.user.name}, Voici vos tâches{" "}
-        <span style={{ fontVariantPosition: "super", color: "red" }}>
-          {count && count}
-          {/* Display the count of tasks in a superscript style. */}
-        </span>
-      </h1>
+      {isAuthenticated && (
+        <h1 style={{ padding: "80px 40px" }}>
+          Bonjour {data && data.user.name}, Voici vos tâches{" "}
+          <span style={{ fontVariantPosition: "super", color: "red" }}>
+            {count && count}
+            {/* Display the count of tasks in a superscript style. */}
+          </span>
+        </h1>
+      )}
     </>
   );
 };

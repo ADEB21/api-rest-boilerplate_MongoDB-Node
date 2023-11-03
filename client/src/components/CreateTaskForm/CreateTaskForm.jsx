@@ -27,16 +27,22 @@ const CreateTaskForm = () => {
     <form className={Style.form}>
       <label htmlFor="">Add a task</label>
       <input onChange={handleUsernameChange} type="text" />
-      <button
-        style={taskField ? {opacity: 1}: {opacity: 0.5, cursor: "not-allowed"}}
-        onClick={(e) => {
-          e.preventDefault();
-          createTask();
-        }}
-        type="submit"
+      <div
+        style={
+          taskField ? { opacity: 1 } : { opacity: 0.3, cursor: "not-allowed" }
+        }
       >
-        Add task
-      </button>
+        <button
+          style={!taskField ? { pointerEvents: "none" }: {pointerEvents: "auto"}}
+          onClick={(e) => {
+            e.preventDefault();
+            createTask();
+          }}
+          type="submit"
+        >
+          Add task
+        </button>
+      </div>
     </form>
   );
 };

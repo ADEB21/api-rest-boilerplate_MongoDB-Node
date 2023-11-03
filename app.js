@@ -9,9 +9,7 @@ dotenv.config();
 
 const taskRoutes = require("./api/routes/tasks");
 
-mongoose.connect(
-  `mongodb+srv://adeb:${process.env.MONGODB_PSW}@cluster0.6fqo0fx.mongodb.net/?retryWrites=true&w=majority`
-);
+mongoose.connect(process.env.MONGODB_DB_PROD);
 
 const secretKey = process.env.SECRET_KEY;
 mongoose.Promise = global.Promise;
@@ -80,9 +78,9 @@ function authorize(role) {
 
 app.post("/login", (req, res) => {
   console.log(req);
-  const name = req.body.username
-  const password = req.body.password
-  const token = jwt.sign({name}, secretKey, { expiresIn: "1h" });
+  const name = req.body.username;
+  const password = req.body.password;
+  const token = jwt.sign({ name }, secretKey, { expiresIn: "1h" });
   res.json(token);
 });
 

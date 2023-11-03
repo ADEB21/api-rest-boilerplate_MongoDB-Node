@@ -2,7 +2,7 @@ import React from "react";
 import Style from "./taskItem.module.scss";
 import eventBus from "../../assets/scripts/eventBus";
 
-const TaskItem = ({ task }) => {
+const TaskItem = ({ task, taskIndex }) => {
   const updateTaskStatus = async (id) => {
     const body = [{ propName: "isDone", value: !task.isDone }];
 
@@ -38,7 +38,11 @@ const TaskItem = ({ task }) => {
   return (
     <>
       <li className={Style.taskItem}>
-        <p className={Style.taskItem_title}>{task.title}</p>
+        <div className={Style.taskItem_header}>
+          <p className={Style.taskItem_title}>N°{taskIndex}</p>
+          <span className={Style.taskItem_separator}>-</span>
+          <p className={Style.taskItem_number}>{task.title}</p>
+        </div>
         <div className={Style.taskItem_actions}>
           <button
             className={Style.taskItem_actions_update}
