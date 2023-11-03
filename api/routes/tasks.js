@@ -1,7 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const generateEtag = require("etag");
+const crypto = require('crypto');
+
+
+
+function generateETag(content) {
+  const hash = crypto.createHash('sha256'); // You can use a different hash algorithm if needed
+  hash.update(content);
+  const etag = hash.digest('hex');
+  return etag;
+}
 
 // import Model
 const Task = require("../models/task");
@@ -29,12 +38,12 @@ router.get("/", (req, res, next) => {
         }),
       };
       if (docs.length >= 0) {
-        const etag = generateEtag((JSON.stringify(response)))
+        const etag = generateETag(JSON.stringify(response))
         if (req.headers["if-None-Match"] === etag) {
           res.status(304);
         } else {
           res.set('ETag', etag);
-          res.status(200).json(response.headers);
+          res.status(200).json(response);
         }
       } else {
         res.status(404).json({

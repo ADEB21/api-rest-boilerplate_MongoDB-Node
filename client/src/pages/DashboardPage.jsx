@@ -1,6 +1,7 @@
 import React from "react";
 import { TaskList } from "../components/TaskList/TaskList";
 import CreateTaskForm from "../components/CreateTaskForm/CreateTaskForm";
+import axios from "axios";
 
 const Login = () => {
   const [data, setData] = React.useState(null);
@@ -18,16 +19,35 @@ const Login = () => {
     setData(response);
   };
 
-  const fetchTasks = async () => {
-    const etag = localStorage.getItem("etag")
-    const response = await fetch("/tasks", {
+  const fetchTasks = () => {
+    const etag = localStorage.getItem("etag");
+    fetch("/tasks", {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((data) => {console.log(data) 
-      return data.json()});
-    setTasks(response);
+      headers: etag ? { "If-None-Match": etag } : undefined,
+    })
+      .then((res) => {
+        if (res.status === 304) {
+          console.log("Not Modified", res);
+          setTasks(JSON.parse(localStorage.getItem("tasks")))
+        } else if (res.status === 200) {
+          const resEtag = res.headers.get("etag");
+          localStorage.setItem("etag", resEtag);
+          console.log("Modified", res);
+          res.json()
+            .then(data => {
+              setTasks(data)
+              localStorage.setItem("tasks", JSON.stringify(data))
+            })
+            .catch(err => {
+              console.error("Error parsing JSON response:", err);
+            });
+        } else {
+          console.error("Unexpected response status:", res.status);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   React.useEffect(() => {
@@ -40,14 +60,14 @@ const Login = () => {
 
   return (
     <>
-      <h1 style={{ padding: "0px 40px" }}>
+      <h1 style={{ padding: "80px 40px" }}>
         Bonjour {data && data.user.name}, Voici vos tâches{" "}
         <span style={{ fontVariantPosition: "super", color: "red" }}>
           {tasks && tasks.count}
         </span>
       </h1>
+      <CreateTaskForm />
       <TaskList tasks={tasks} />
-      <CreateTaskForm/>
     </>
   );
 };
