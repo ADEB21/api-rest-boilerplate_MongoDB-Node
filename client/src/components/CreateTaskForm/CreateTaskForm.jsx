@@ -12,11 +12,13 @@ const CreateTaskForm = () => {
   };
 
   const createTask = async () => {
+    const token = localStorage.getItem("token"); // Get the authorization token from local storage.
     const body = { title: taskField };
     const response = await fetch("/tasks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Inclure le jeton dans les en-têtes de la requête.
       },
       body: JSON.stringify(body),
     }).then((data) => data.json());
@@ -33,7 +35,9 @@ const CreateTaskForm = () => {
         }
       >
         <button
-          style={!taskField ? { pointerEvents: "none" }: {pointerEvents: "auto"}}
+          style={
+            !taskField ? { pointerEvents: "none" } : { pointerEvents: "auto" }
+          }
           onClick={(e) => {
             e.preventDefault();
             createTask();

@@ -2,6 +2,7 @@ const express = require("express");  // Import the Express framework.
 const router = express.Router();  // Create an Express router.
 const mongoose = require("mongoose");  // Import Mongoose for database operations.
 const crypto = require('crypto');  // Import the Crypto module for ETag generation.
+const checkAuth = require('../middleware/check-auth')
 
 function generateETag(content) {
   const hash = crypto.createHash('sha256');  // Create a SHA-256 hash object for ETag generation.
@@ -14,8 +15,9 @@ function generateETag(content) {
 const Task = require("../models/task");
 
 // Define a route for getting all tasks.
-router.get("/", (req, res, next) => {
-  Task.find()  // Find all tasks in the database.
+router.get("/", checkAuth, (req, res, next) => {
+  const currentUserId = req.user.userId
+  Task.find({userId: currentUserId})  // Find all tasks in the database.
     .select("title isDone _date _id")  // Select specific fields to return in the response.
     .exec()  // Execute the query.
     .then((docs) => {
@@ -58,10 +60,11 @@ router.get("/", (req, res, next) => {
 });
 
 // Define a route for creating a new task.
-router.post("/", (req, res, next) => {
+router.post("/", checkAuth, (req, res, next) => {
   const task = new Task({
     _id: new mongoose.Types.ObjectId(),
     title: req.body.title,
+    userId: req.user.userId
   });
   task
     .save()  // Save the new task to the database.

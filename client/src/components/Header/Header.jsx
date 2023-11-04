@@ -14,21 +14,21 @@ const Header = ({ app }) => {
     localStorage.removeItem("token");
   };
 
-  // Function to fetch user data securely with an authorization token.
-  const fetchData = async () => {
-    const token = localStorage.getItem("token"); // Get the authorization token from local storage.
-    const response = await fetch("/protected", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Include the token in the request headers.
-      },
-    }).then((data) => data.json()); // Parse the response data and update the user data state.
-    setData(response);
-  };
+  // // Function to fetch user data securely with an authorization token.
+  // const fetchData = async () => {
+  //   const token = localStorage.getItem("token"); // Get the authorization token from local storage.
+  //   const response = await fetch("/protected", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`, // Include the token in the request headers.
+  //     },
+  //   }).then((data) => data.json()); // Parse the response data and update the user data state.
+  //   setData(response);
+  // };
 
   React.useEffect(() => {
-    fetchData();
+    // fetchData();
     eventBus.on("refetch", () => {
       setTimeout(() => {
         setCount(JSON.parse(localStorage.getItem("tasks")).count);
@@ -67,11 +67,11 @@ const Header = ({ app }) => {
 
       {isAuthenticated && (
         <h1 className={Style.isConnected}>
-          Hello {data && data.user.name} 👋, Vous avez 
+          Hello {data && data.user.name} 👋, You have 
           <span style={{ color: "red" }}>
             {" " + count + " "}
           </span>
-          tâche{count > 1 ? "s" : ""}
+          task{count > 1 ? "s" : ""}
         </h1>
       )}
     </>

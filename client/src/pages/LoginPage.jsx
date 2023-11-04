@@ -1,9 +1,13 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
-import Form from "../components/Form/Form";
+import LoginForm from "../components/LoginForm/LoginForm";
 
-const Login = () => {
-  return <Form />;
+const LoginPage = () => {
+  return (
+    <>
+      <h1 style={{textAlign: "center", marginBottom: "36px"}}>Login</h1>
+      <LoginForm />
+    </>
+  );
 };
 
-export default Login;
+export default LoginPage;

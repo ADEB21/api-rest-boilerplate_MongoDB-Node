@@ -8,11 +8,38 @@ const jwt = require("jsonwebtoken");
 dotenv.config();
 
 const taskRoutes = require("./api/routes/tasks");
+const userRoutes = require("./api/routes/user");
+const checkAuth = require("./api/middleware/check-auth");
 
 mongoose.connect(process.env.MONGODB_DB_PROD);
 
 const secretKey = process.env.SECRET_KEY;
 mongoose.Promise = global.Promise;
+
+// function authorize(role) {
+//   return (req, res, next) => {
+//     const authHeader = req.headers.authorization;
+
+//     if (authHeader) {
+//       const token = authHeader.split(" ")[1];
+
+//       jwt.verify(token, secretKey, (err, user) => {
+//         if (err) {
+//           return res.sendStatus(403);
+//         }
+
+//         if (user.role === role) {
+//           req.user = user;
+//           next();
+//         } else {
+//           res.sendStatus(403);
+//         }
+//       });
+//     } else {
+//       res.sendStatus(401);
+//     }
+//   };
+// }
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,72 +58,16 @@ app.use((req, res, next) => {
   next();
 });
 
-function authentificateJWT(req, res, next) {
-  const authHeader = req.headers.authorization;
+app.use("/tasks", taskRoutes);
+app.use("/user", userRoutes);
 
-  if (authHeader) {
-    const token = authHeader.split(" ")[1];
 
-    jwt.verify(token, secretKey, (err, user) => {
-      if (err) {
-        return res.sendStatus(403);
-      }
-
-      req.user = user;
-      next();
-    });
-  } else {
-    res.sendStatus(401);
-  }
-}
-
-function authorize(role) {
-  return (req, res, next) => {
-    const authHeader = req.headers.authorization;
-
-    if (authHeader) {
-      const token = authHeader.split(" ")[1];
-
-      jwt.verify(token, secretKey, (err, user) => {
-        if (err) {
-          return res.sendStatus(403);
-        }
-
-        if (user.role === role) {
-          req.user = user;
-          next();
-        } else {
-          res.sendStatus(403);
-        }
-      });
-    } else {
-      res.sendStatus(401);
-    }
-  };
-}
-
-app.post("/login", (req, res) => {
-  const name = req.body.username;
-  const password = req.body.password;
-  const token = jwt.sign({ name }, secretKey, { expiresIn: "1h" });
-  res.json(token);
-});
-
-app.get("/admin", authorize("admin"), (req, res) => {
-  res.json({ message: "Welcome Admin" });
-});
-
-app.get("/protected", authentificateJWT, (req, res) => {
+app.get("/dashboard", checkAuth, (req, res) => {
   res.json({ message: "Protected data", user: req.user });
 });
 
-app.use("/tasks", taskRoutes);
-
-app.use("/hello", (req, res, next) => {
-  res.status(200);
-  res.json({
-    message: "Todo app",
-  });
-});
+// app.get("/admin", authorize("admin"), (req, res) => {
+//   res.json({ message: "Welcome Admin" });
+// });
 
 module.exports = app;

@@ -4,12 +4,14 @@ import eventBus from "../../assets/scripts/eventBus";
 
 const TaskItem = ({ task, taskIndex }) => {
   const updateTaskStatus = async (id) => {
+    const token = localStorage.getItem("token"); // Get the authorization token from local storage.
     const body = [{ propName: "isDone", value: !task.isDone }];
 
     const response = await fetch(`/tasks/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Inclure le jeton dans les en-têtes de la requête.
       },
       body: JSON.stringify(body),
     }).then((data) => {
@@ -17,14 +19,18 @@ const TaskItem = ({ task, taskIndex }) => {
         data.json();
         eventBus.dispatch("refetch");
       }
-    });
+    }).catch(err => {
+      console.log(err);
+    })
   };
 
   const deleteTask = (id) => {
+    const token = localStorage.getItem("token"); // Get the authorization token from local storage.
     fetch(`/tasks/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Inclure le jeton dans les en-têtes de la requête.
       },
     }).then((res) => {
       res.json().then((data) => {

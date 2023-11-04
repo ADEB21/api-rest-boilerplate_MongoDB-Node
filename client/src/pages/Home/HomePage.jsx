@@ -10,6 +10,7 @@ const HomePage = () => {
         <p>Go to your dashboard to see them</p>
         <div>
           <a href="/dashboard">Dashboard</a>
+          <a href="/signup">Signup</a>
         </div>
       </div>
       <img src={img} alt="" />
