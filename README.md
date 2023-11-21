@@ -1,9 +1,7 @@
 # api-rest-boilerplate_MongoDB-Node
 
 
-## Deployment
-
-To deploy this project run
+## 🚀 To run this project:
 - Server
 
 ```bash
